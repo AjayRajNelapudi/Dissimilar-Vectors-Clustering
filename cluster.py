@@ -110,11 +110,15 @@ class DissimilarVectoredKMeans(KMeans):
 
 if __name__ == "__main__":
     training_dataset = [
+        {'advance': 2, 'happy': 3, 'new': 1, 'year': 3},
+        {'happy': 2, 'christmas': 3, 'ajay': 3},
+        {'happy': 1, 'birthday': 2},
+        {'happy': 2, 'new': 2, 'year': 2, 'hello': 3},
         {'hello': 2, 'world': 3},
         {'hello': 1, 'world': 2, 'ajay': 3},
-        {'world': 3, 'ajay': 2},
+        {'happy': 3, 'ajay': 2},
         {'hello': 1, 'ajay': 4},
-        {'ajay': 5, 'world': 2}
+        {'ajay': 5, 'world': 2},
     ]
     model = DissimilarVectoredKMeans(n_clusters=2)
     print('Training Dataset:', training_dataset)
