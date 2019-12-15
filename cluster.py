@@ -1,7 +1,8 @@
 import numpy as np
 from sklearn.cluster import KMeans
+from contextlib import suppress
 
-class DissimilarVectoredKMeans(KMeans):
+class DissimilarVectorsKMeans(KMeans):
     '''
     This class helps in clustering dissimilar vectors of varying length
     '''
@@ -34,8 +35,9 @@ class DissimilarVectoredKMeans(KMeans):
         total_features = len(self.features)
         vector = np.zeros(shape=(total_features,))
         for attr, value in x.items():
-            index = self.features.index(attr)
-            vector[index] = value
+            with suppress(ValueError):
+                index = self.features.index(attr)
+                vector[index] = value
         return vector
 
     def build_vectors(self, X):
@@ -116,21 +118,21 @@ if __name__ == "__main__":
         {'happy': 2, 'new': 2, 'year': 2, 'hello': 3},
         {'hello': 2, 'world': 3},
         {'hello': 1, 'world': 2, 'ajay': 3},
-        {'happy': 3, 'ajay': 2},
+        {'happy': 3, 'day': 2},
         {'hello': 1, 'ajay': 4},
-        {'ajay': 5, 'world': 2},
     ]
-    model = DissimilarVectoredKMeans(n_clusters=2)
+    model = DissimilarVectorsKMeans(n_clusters=2)
     print('Training Dataset:', training_dataset)
     model.fit(training_dataset)
     print('Labels:', model.labels_)
-
-    print('Cluster centers', model.cluster_centers)
+    print('Cluster centers:', model.cluster_centers)
+    print('Feature table:', model.features)
 
     testing_dataset = [
-        {'hello': 1, 'ajay': 1}
+        {'happy': 1, 'day': 2, 'ajay': 3, 'raj': 1}
     ]
     print('Testing dataset:', testing_dataset)
     label = model.predict(testing_dataset)
+    print('Predicted label:', label)
     center = model.cluster_centers[label[0]]
     print('Predicted Center:', center)
